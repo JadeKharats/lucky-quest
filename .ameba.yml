@@ -1,0 +1,14 @@
+# Lucky's macros (`needs x : T`, `column x : T`, `attribute x : T`, `param x : T`)
+# look like useless type-declared assignments to ameba.
+Lint/UselessAssign:
+  ExcludeTypeDeclarations: true
+
+# spec/setup holds Lucky's spec hooks, not specs.
+Lint/SpecFilename:
+  IgnoredDirs: [spec/support, spec/fixtures, spec/data, spec/setup]
+  IgnoredFilenames: [spec_helper]
+
+Globs:
+  - "**/*.cr"
+  - "!lib"
+  - "!bin"
