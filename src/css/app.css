@@ -391,3 +391,39 @@ select {
   margin: 0;
   width: 22px;
 }
+
+/* Raids */
+.section-title {
+  margin: 24px 0 12px;
+}
+
+.raid-steps {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.raid-step {
+  border-top: 1px solid var(--border);
+  padding: 10px 0;
+}
+
+.raid-step:first-child {
+  border-top: 0;
+}
+
+.raid-step-locked {
+  opacity: 0.55;
+}
+
+.raid-step-done .quest-state,
+.raid-finished {
+  color: var(--success);
+}
+
+.raid-finished {
+  font-weight: 700;
+}
+
+.raid .member-actions [type='submit'] {
+  margin-top: 8px;
+}

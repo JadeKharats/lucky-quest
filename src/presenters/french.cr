@@ -35,6 +35,21 @@ module French
     Quests::Frequency::Weekly   => "Une fois par semaine",
   }
 
+  STEP_RULES = {
+    Quests::StepRule::Everyone => "Chacun sa part",
+    Quests::StepRule::Anyone   => "Un seul suffit",
+  }
+
+  def step_rule(rule : Quests::StepRule) : String
+    STEP_RULES[rule]
+  end
+
+  # "Lina", "Lina et Emma", "Lina, Emma et David".
+  def names(list : Array(String)) : String
+    return list.join if list.size < 2
+    "#{list[0..-2].join(", ")} et #{list.last}"
+  end
+
   WEEKDAYS = %w[lun. mar. mer. jeu. ven. sam. dim.]
 
   def frequency(frequency : Quests::Frequency) : String

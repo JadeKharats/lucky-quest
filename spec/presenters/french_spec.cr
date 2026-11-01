@@ -35,6 +35,18 @@ describe French do
     French.period(Time.local(2026, 11, 2), weekly: true).should eq("semaine du 2 nov.")
   end
 
+  it "names the step rules" do
+    French.step_rule(Quests::StepRule::Everyone).should eq("Chacun sa part")
+    French.step_rule(Quests::StepRule::Anyone).should eq("Un seul suffit")
+  end
+
+  it "lists names the French way" do
+    French.names([] of String).should eq("")
+    French.names(["Lina"]).should eq("Lina")
+    French.names(["Lina", "Emma"]).should eq("Lina et Emma")
+    French.names(["Lina", "Emma", "David"]).should eq("Lina, Emma et David")
+  end
+
   it "names each role" do
     French.role(Family::Role::Parent).should eq("Parent")
     French.role(Family::Role::Child).should eq("Enfant")

@@ -1,5 +1,5 @@
 # Frequency, plus the days when it is "Certains jours". Plain inputs: the
-# days are an array attribute (`quest:days[]`).
+# days are an array attribute (`quest:days[]`, `raid:days[]`).
 class Quests::RecurrenceFields < BaseComponent
   needs frequency : Avram::PermittedAttribute(Quests::Frequency)
   needs days : Avram::PermittedAttribute(Array(Int32))
@@ -20,9 +20,9 @@ class Quests::RecurrenceFields < BaseComponent
       Time::DayOfWeek.values.each do |day|
         label class: "day" do
           if chosen.includes?(day.value)
-            input type: "checkbox", name: "quest:days[]", value: day.value.to_s, checked: "checked"
+            input type: "checkbox", name: "#{days.param_key}:days[]", value: day.value.to_s, checked: "checked"
           else
-            input type: "checkbox", name: "quest:days[]", value: day.value.to_s
+            input type: "checkbox", name: "#{days.param_key}:days[]", value: day.value.to_s
           end
           text French.weekday(day)
         end

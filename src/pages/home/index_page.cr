@@ -9,6 +9,9 @@ class Home::IndexPage < MainLayout
     h1 "Bonjour #{current_user.name} !"
     weight_shortcut if current_user.role.keep_weight_log?
     validations_shortcut if report.awaiting_validation > 0
+    report.raids.each do |view|
+      mount Raids::Card, raid_view: view, member: current_user, names: report.names
+    end
     report.agenda.try { |agenda| mount Quests::AgendaView, agenda: agenda }
   end
 
