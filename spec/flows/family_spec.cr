@@ -16,6 +16,7 @@ describe "Family flow", tags: "flow" do
 
     # Her own device: nobody is signed in there.
     flow.click "@sign-out-button"
+    flow.should have_element("@sign-in-button")
     flow.visit URI.parse(url).path
     flow.click "@redeem-access-link"
 
