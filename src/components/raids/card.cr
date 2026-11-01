@@ -7,25 +7,33 @@ class Raids::Card < BaseComponent
 
   def render
     progress = raid_view.progress
+    steps = raid_view.raid.steps
     section class: "card raid" do
-      h2 words.raid(raid_view.raid.title)
+      div class: "raid-head" do
+        mount Shared::Icon, name: :raid, size: 28
+        h2 words.raid(raid_view.raid.title)
+        span "#{steps.count { |step| progress.state(step).done? }} / #{steps.size}", class: "section-count"
+      end
       if progress.finished?
         para words.raid_finished, class: "raid-finished"
       end
       ol class: "raid-steps" do
-        raid_view.raid.steps.each { |step| step_row(step) }
+        steps.each_with_index { |step, index| step_row(step, index + 1) }
       end
     end
   end
 
-  private def step_row(step : Quests::RaidStep)
+  private def step_row(step : Quests::RaidStep, number : Int32)
     state = raid_view.progress.state(step)
     li class: "raid-step raid-step-#{state.to_s.downcase}" do
-      div class: "quest-title" do
-        strong step.title
-        span detail(step, state), class: "quest-state"
+      span number.to_s, class: "raid-dot", "aria-hidden": "true"
+      div class: "raid-body" do
+        div class: "quest-title" do
+          strong step.title
+          span detail(step, state), class: "quest-state"
+        end
+        actions(step)
       end
-      actions(step)
     end
   end
 

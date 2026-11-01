@@ -9,7 +9,7 @@ describe AccessLinks::Redeem do
     response.headers["Location"].should eq(Home::Index.path)
     AccessLinkQuery.new.first.used_at.should_not be_nil
     home = AppClient.new.headers("Cookie": session_cookie(response)).exec(Home::Index)
-    home.body.should contain("Bonjour Lina")
+    home.body.should contain("Salut Lina !")
   end
 
   it "works only once" do

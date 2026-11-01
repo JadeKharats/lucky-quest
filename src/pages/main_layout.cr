@@ -19,35 +19,24 @@ abstract class MainLayout
   def render
     html_doctype
 
-    html lang: "fr", "data-skin": current_user.skin.to_s.downcase do
-      mount Shared::LayoutHead, page_title: page_title
+    skin = current_user.skin
+    html lang: "fr", "data-skin": skin.to_s.downcase do
+      mount Shared::LayoutHead, page_title: page_title, color_scheme: color_scheme(skin)
 
       body do
-        render_header
-        main do
-          mount Shared::FlashMessages, context.flash
-          content
+        div class: "app" do
+          mount Shared::TabBar, member: current_user, words: words, current_path: context.request.path
+          main do
+            mount Shared::FlashMessages, context.flash
+            content
+          end
         end
       end
     end
   end
 
-  # Each member only sees the pages their role may use.
-  private def render_header
-    role = current_user.role
-    header class: "site-header" do
-      link "Quest", to: Home::Index, class: "site-name"
-      nav do
-        link "Agenda", to: Schedules::Index
-        link "Repas", to: Meals::Index
-        link "Cantine", to: Canteen::Index if role.enter_canteen_menu?
-        link words.quests, to: Quests::Index if role.manage_family?
-        link "À valider", to: Validations::Index if role.validate_quests?
-        link words.shop, to: Rewards::Index if role.buy_rewards? || role.manage_family?
-        link "Poids", to: Weighings::Index if role.keep_weight_log?
-        link "Famille", to: Members::Index if role.manage_family?
-        link "Se déconnecter", to: SignIns::Delete, flow_id: "sign-out-button"
-      end
-    end
+  private def color_scheme(skin : Appearance::Skin) : String
+    return "light dark" if skin.follows_device?
+    skin.always_dark? ? "dark" : "light"
   end
 end

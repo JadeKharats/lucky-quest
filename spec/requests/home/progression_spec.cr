@@ -12,7 +12,7 @@ describe "Progression on the home page" do
     body.should contain("Rang D")
     body.should contain("200 XP")
     body.should contain("encore 300 XP pour le rang C")
-    body.should contain("Série : 1 jour")
+    body.should match(/<span class="streak">.*1 jour<\/span>/)
     body.should contain(Rewards::Index.path)
   end
 

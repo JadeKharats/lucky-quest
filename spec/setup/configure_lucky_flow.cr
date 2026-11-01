@@ -18,7 +18,10 @@ LuckyFlow::Registry.register :headless_chrome do
     config.chrome_options.binary = ENV["CHROME_BIN"]?
     config.chrome_options.args = [
       "--no-sandbox",
-      "--headless",
+      "--headless=new",
+      # Wide enough for the Mac layout (side bar): at phone width the fixed
+      # tab bar would cover the buttons of this short headless window.
+      "--window-size=1280,1000",
       "--disable-gpu",
       "--disable-dev-shm-usage",
       "--remote-debugging-port=#{ENV.fetch("CHROME_REMOTE_DEBUGGING_PORT", "9222")}",

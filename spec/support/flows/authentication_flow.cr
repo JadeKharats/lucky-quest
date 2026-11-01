@@ -5,7 +5,7 @@ class AuthenticationFlow < BaseFlow
   end
 
   def sign_out
-    visit Weighings::Index
+    visit Menus::Show
     sign_out_button.click
   end
 
@@ -18,7 +18,7 @@ class AuthenticationFlow < BaseFlow
   end
 
   def should_be_signed_in
-    current_page.should have_element("@sign-out-button")
+    current_page.should have_element("@tab-home")
   end
 
   def should_be_signed_out

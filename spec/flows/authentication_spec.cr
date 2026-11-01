@@ -29,6 +29,6 @@ describe "Authentication flow", tags: "flow" do
 
     flow.visit Weighings::Index, as: user
 
-    flow.should have_element("@sign-out-button")
+    flow.should have_element("@tab-home")
   end
 end

@@ -1,0 +1,6 @@
+{
+  "plugins": {
+    "css": ["aliases", "cssGlobs", "config/bun/external_fonts.js"],
+    "js": ["aliases", "jsGlobs"]
+  }
+}

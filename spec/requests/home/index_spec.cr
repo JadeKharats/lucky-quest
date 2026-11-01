@@ -19,7 +19,7 @@ describe Home::Index do
 
     response = AppClient.new.exec(Home::Index, backdoor_user_id: lina.id)
 
-    response.body.should contain("Bonjour Lina")
+    response.body.should contain("Salut Lina !")
     response.body.should contain("Aider en cuisine")
     response.body.should_not contain("Mettre la table")
     response.body.should_not contain(Weighings::Index.path)

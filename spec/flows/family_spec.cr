@@ -15,11 +15,12 @@ describe "Family flow", tags: "flow" do
     url = flow.el("@access-url").value.to_s
 
     # Her own device: nobody is signed in there.
+    flow.visit Menus::Show
     flow.click "@sign-out-button"
     flow.should have_element("@sign-in-button")
     flow.visit URI.parse(url).path
     flow.click "@redeem-access-link"
 
-    flow.should have_element("h1", text: "Bonjour Lina !")
+    flow.should have_element("h1", text: "Salut Lina !")
   end
 end

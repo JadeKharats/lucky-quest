@@ -1,5 +1,6 @@
 class Shared::LayoutHead < BaseComponent
   needs page_title : String
+  needs color_scheme : String = "light dark"
 
   def render
     head do
@@ -9,6 +10,7 @@ class Shared::LayoutHead < BaseComponent
       js_link asset("js/app.js"), defer: "true", type: "module"
       csrf_meta_tags
       responsive_meta_tag
+      meta name: "color-scheme", content: color_scheme
 
       # Development helper used with the `lucky watch` command.
       # Reloads the browser when Crystal files are updated.

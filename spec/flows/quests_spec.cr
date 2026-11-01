@@ -8,7 +8,7 @@ describe "Quests flow", tags: "flow" do
 
     flow.visit Home::Index, as: lina
     flow.click "@done-#{quest.id}"
-    flow.should have_element(".quest-state", text: "faite, à valider")
+    flow.should have_element(".quest-state", text: "Un parent va valider")
 
     flow.visit Home::Index, as: guest
     flow.click "@to-validate"
@@ -17,6 +17,6 @@ describe "Quests flow", tags: "flow" do
     flow.should have_element("@flash", text: "« Mettre la table » validée pour Lina.")
 
     flow.visit Home::Index, as: lina
-    flow.should have_element(".quest-state", text: "validée ✓")
+    flow.should have_element(".quest-state", text: "Validée ✓")
   end
 end

@@ -6,7 +6,7 @@ class Appearances::Choose < BrowserAction
       else
         flash.failure = "Cette apparence n'existe pas."
       end
-      redirect Home::Index
+      redirect Menus::Show
     end
   end
 end

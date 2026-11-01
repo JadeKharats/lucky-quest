@@ -17,6 +17,8 @@ COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --production
 
 COPY --from=shards /app/lib/lucky/src/bun ./lib/lucky/src/bun
+COPY config/bun.json ./config/bun.json
+COPY config/bun ./config/bun
 COPY src/js ./src/js
 COPY src/css ./src/css
 COPY public ./public
