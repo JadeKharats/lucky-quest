@@ -19,6 +19,18 @@ describe Family::Role do
     Family::Role::Guest.keep_weight_log?.should be_false
   end
 
+  it "gives quests to parents and children" do
+    Family::Role::Parent.keep_quests?.should be_true
+    Family::Role::Child.keep_quests?.should be_true
+    Family::Role::Guest.keep_quests?.should be_false
+  end
+
+  it "lets parents and guests validate quests" do
+    Family::Role::Parent.validate_quests?.should be_true
+    Family::Role::Guest.validate_quests?.should be_true
+    Family::Role::Child.validate_quests?.should be_false
+  end
+
   it "limits only guests in time" do
     Family::Role::Guest.time_limited?.should be_true
     Family::Role::Parent.time_limited?.should be_false

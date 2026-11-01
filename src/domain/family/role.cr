@@ -15,6 +15,16 @@ module Family
       parent?
     end
 
+    # Guests help without quests of their own.
+    def keep_quests? : Bool
+      !guest?
+    end
+
+    # A child never validates a quest, not even someone else's.
+    def validate_quests? : Bool
+      !child?
+    end
+
     # Guests (the grandparents) come in for a while, the household for good.
     def time_limited? : Bool
       guest?
