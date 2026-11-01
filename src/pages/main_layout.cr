@@ -27,11 +27,14 @@ abstract class MainLayout
     end
   end
 
+  # Each member only sees the pages their role may use.
   private def render_header
+    role = current_user.role
     header class: "site-header" do
       link "Quest", to: Home::Index, class: "site-name"
       nav do
-        link "Poids", to: Weighings::Index
+        link "Poids", to: Weighings::Index if role.keep_weight_log?
+        link "Famille", to: Members::Index if role.manage_family?
         link "Se déconnecter", to: SignIns::Delete, flow_id: "sign-out-button"
       end
     end

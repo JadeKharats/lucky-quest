@@ -242,3 +242,71 @@ input:not([type='hidden']):not([type='submit']) {
   margin: 0;
   padding: 6px 8px;
 }
+
+/* Family */
+.members ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.member {
+  border-top: 1px solid var(--border);
+  padding: 12px 0;
+}
+
+.member:first-child {
+  border-top: 0;
+}
+
+.member-title {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.member-role,
+.member-access {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.member-edit summary {
+  color: var(--accent);
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.member-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.member-actions [type='submit'] {
+  margin-top: 8px;
+}
+
+.member-actions .secondary [type='submit'] {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  display: block;
+  font-size: 1.1rem;
+  margin: 6px 0 4px;
+  padding: 10px 12px;
+}
+
+.access-url {
+  font-family: ui-monospace, monospace;
+  font-size: 0.9rem !important;
+  max-width: 100% !important;
+}

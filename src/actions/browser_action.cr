@@ -37,9 +37,24 @@ abstract class BrowserAction < Lucky::Action
   # so that any page that inherits from MainLayout can use the `current_user`
   expose current_user
 
+  SESSION_GENERATION_KEY = "session_generation"
+
+  # The session remembers the member's generation: bumping it signs every
+  # device out (Members::SignOutDevices).
+  def sign_in(user : User) : Nil
+    super
+    session.set(SESSION_GENERATION_KEY, user.session_generation.to_s)
+  end
+
   # This method tells Authentic how to find the current user
   # The 'memoize' macro makes sure only one query is issued to find the user
   private memoize def find_current_user(id : String | User::PrimaryKeyType) : User?
-    UserQuery.new.id(id).first?
+    UserQuery.new.id(id).first?.try { |user| user if still_welcome?(user) }
+  end
+
+  # Signed out devices and guests after their last day are visitors again.
+  private def still_welcome?(user : User) : Bool
+    session.get?(SESSION_GENERATION_KEY) == user.session_generation.to_s &&
+      user.access_window.open?(Time.utc)
   end
 end

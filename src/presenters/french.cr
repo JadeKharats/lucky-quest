@@ -19,6 +19,16 @@ module French
     "#{time.day} #{MONTHS[time.month - 1]}"
   end
 
+  ROLES = {
+    Family::Role::Parent => "Parent",
+    Family::Role::Child  => "Enfant",
+    Family::Role::Guest  => "Invité·e",
+  }
+
+  def role(role : Family::Role) : String
+    ROLES[role]
+  end
+
   def date_time(time : Time) : String
     "#{date(time)} à #{time.to_s("%H:%M")}"
   end

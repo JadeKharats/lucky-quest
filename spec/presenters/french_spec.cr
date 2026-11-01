@@ -22,4 +22,10 @@ describe French do
   it "writes a short date" do
     French.date(Time.local(2026, 2, 3)).should eq("3 févr.")
   end
+
+  it "names each role" do
+    French.role(Family::Role::Parent).should eq("Parent")
+    French.role(Family::Role::Child).should eq("Enfant")
+    French.role(Family::Role::Guest).should eq("Invité·e")
+  end
 end

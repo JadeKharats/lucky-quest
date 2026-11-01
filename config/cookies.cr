@@ -18,8 +18,9 @@ Lucky::CookieJar.configure do |settings|
     # Set all cookies to the root path by default
     cookie.path("/")
 
-    # You can set other defaults for cookies here. For example:
-    #
-    #    cookie.expires(1.year.from_now).domain("mydomain.com")
+    # Phones and the tablet stay signed in: the session lasts a year from the
+    # last visit. Guests are cut off server-side at the end of their access.
+    cookie.expires(1.year.from_now) if cookie.name == Lucky::Session.settings.key
+    cookie
   }
 end

@@ -4,6 +4,7 @@ class SignIns::NewPage < AuthLayout
   def content
     h1 "Connexion"
     render_sign_in_form(@operation)
+    para "Pas de mot de passe ? Demande un lien d'accès à un parent.", class: "empty"
   end
 
   private def render_sign_in_form(op)

@@ -1,11 +1,9 @@
 class Home::Index < BrowserAction
-  include Auth::AllowGuests
-
   get "/" do
-    if current_user?
+    if current_user.role.keep_weight_log?
       redirect Weighings::Index
     else
-      redirect SignIns::New
+      html Home::WelcomePage
     end
   end
 end

@@ -2,7 +2,7 @@
 #
 #   lucky users.create me@example.com
 class Users::Create < LuckyTask::Task
-  summary "Create an account (Quest has no public sign-up)"
+  summary "Create a parent account (Quest has no public sign-up)"
   name "users.create"
   positional_arg :email, "Email of the new account", example: "me@example.com"
 
@@ -14,10 +14,11 @@ class Users::Create < LuckyTask::Task
 
   # Returns whether the account was created; `call` turns it into the exit status.
   def run(email : String) : Bool
+    member_name = ask_line("Name: ")
     password = ask_password("Password: ")
     confirmation = ask_password("Confirm password: ")
 
-    CreateUser.create(email: email, password: password, password_confirmation: confirmation) do |operation, user|
+    CreateUser.create(email: email, name: member_name, password: password, password_confirmation: confirmation) do |operation, user|
       if user
         output.puts "Created #{user.email}"
       else
@@ -28,6 +29,11 @@ class Users::Create < LuckyTask::Task
       end
       !user.nil?
     end
+  end
+
+  private def ask_line(prompt : String) : String
+    output.print prompt
+    input.gets.to_s.chomp
   end
 
   private def ask_password(prompt : String) : String

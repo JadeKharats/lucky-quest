@@ -5,7 +5,7 @@ require "../spec_helper"
 describe "Authentication flow", tags: "flow" do
   it "signs an existing account in and out" do
     user = UserFactory.create
-    flow = AuthenticationFlow.new(user.email)
+    flow = AuthenticationFlow.new(user.email.to_s)
 
     flow.sign_in "wrong-password"
     flow.should_have_password_error

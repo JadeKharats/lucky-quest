@@ -1,4 +1,6 @@
 class Weighings::Create < BrowserAction
+  include Auth::RequireWeightLog
+
   post "/poids" do
     SaveWeighing.create(params, owner: current_user) do |operation, weighing|
       if weighing

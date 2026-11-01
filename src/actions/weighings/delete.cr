@@ -1,4 +1,6 @@
 class Weighings::Delete < BrowserAction
+  include Auth::RequireWeightLog
+
   delete "/poids/:weighing_id" do
     # Scoped to the owner: someone else's weighing is "not found" (404).
     weighing = WeighingQuery.owned_by(current_user).find(weighing_id)
