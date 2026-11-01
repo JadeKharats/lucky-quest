@@ -33,7 +33,8 @@ ENV UID=$IMAGE_UID
 ENV APP_USER=appuser
 ENV LUCKY_ENV=production
 
-RUN apk add --no-cache ca-certificates
+# tzdata: the app cuts days at midnight in Paris (config/time_zone.cr).
+RUN apk add --no-cache ca-certificates tzdata
 RUN adduser -D -g "" -H -s /sbin/nologin -u "${UID}" "${APP_USER}"
 
 WORKDIR /app
@@ -68,6 +69,7 @@ COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 COPY --from=build /etc/hosts /etc/hosts
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /usr/share/zoneinfo/Europe/Paris /usr/share/zoneinfo/Europe/Paris
 
 COPY --from=build /app/deps /
 COPY --from=build /app/bin/quest /app/bin/quest-tasks /app/

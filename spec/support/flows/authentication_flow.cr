@@ -5,7 +5,7 @@ class AuthenticationFlow < BaseFlow
   end
 
   def sign_out
-    visit Me::Show
+    visit Weighings::Index
     sign_out_button.click
   end
 
@@ -26,7 +26,7 @@ class AuthenticationFlow < BaseFlow
   end
 
   def should_have_password_error
-    current_page.should have_element("body", text: "Password is wrong")
+    current_page.should have_element("body", text: SignInUser::WRONG_CREDENTIALS)
   end
 
   private def sign_out_button

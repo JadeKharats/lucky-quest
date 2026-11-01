@@ -21,7 +21,7 @@ abstract class BrowserAction < Lucky::Action
 
   # When testing you can skip normal sign in by using `visit` with the `as` param
   #
-  # flow.visit Me::Show, as: UserFactory.create
+  # flow.visit Weighings::Index, as: UserFactory.create
   include Auth::TestBackdoor
 
   # By default all actions that inherit 'BrowserAction' require sign in.

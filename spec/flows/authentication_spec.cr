@@ -27,7 +27,7 @@ describe "Authentication flow", tags: "flow" do
     user = UserFactory.create
     flow = BaseFlow.new
 
-    flow.visit Me::Show, as: user
+    flow.visit Weighings::Index, as: user
 
     flow.should have_element("@sign-out-button")
   end

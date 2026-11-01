@@ -3,6 +3,8 @@ class SignInUser < Avram::Operation
   # You can modify this in src/operations/mixins/user_from_email.cr
   include UserFromEmail
 
+  WRONG_CREDENTIALS = "E-mail ou mot de passe incorrect."
+
   attribute email : String
   attribute password : String
 
@@ -26,13 +28,12 @@ class SignInUser < Avram::Operation
   private def validate_credentials(user)
     if user
       unless Authentic.correct_password?(user, password.value.to_s)
-        password.add_error "is wrong"
+        password.add_error WRONG_CREDENTIALS
       end
     else
-      # Usually ok to say that an email is not in the system:
-      # https://kev.inburke.com/kevin/invalid-username-or-password-useless/
-      # https://github.com/luckyframework/lucky_cli/issues/192
-      email.add_error "is not in our system"
+      # Same message as a wrong password: a private family app does not
+      # tell strangers which emails have an account.
+      password.add_error WRONG_CREDENTIALS
     end
   end
 end

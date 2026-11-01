@@ -78,50 +78,30 @@ jobs:
   # actions, pages and Avram models are adapters covered by the other specs.
   mutation:
     runs-on: ubuntu-latest
+    container: crystallang/crystal:1.21.0-alpine
     if: github.event_name == 'pull_request'
-    services:
-      postgres:
-        image: postgres:18-alpine
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
-    env:
-      DB_HOST: localhost
-      DB_PORT: 5432
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: crystal-lang/install-crystal@v1
-        with:
-          crystal: 1.21.0
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.4.3
-      - name: Point LuckyFlow at the runner's chromedriver
-        run: echo "CHROMEDRIVER_PATH=$CHROMEWEBDRIVER/chromedriver" >> "$GITHUB_ENV"
-      - name: Install dependencies
-        run: shards install && bun install --frozen-lockfile && bun run build
+      - name: Install git and tzdata
+        run: apk add --no-cache git tzdata
       # crytic is not a shard dependency (local dev uses a global binary), and
       # its tagged release pulls an ameba that doesn't build on Crystal 1.21,
       # so build crytic here with ameba pinned to master.
       - name: Build crytic
         run: |
-          git clone --depth 1 --branch v9.0.0 https://github.com/hanneskaeufler/crytic.git /tmp/crytic
-          cd /tmp/crytic
+          git clone --depth 1 --branch v9.0.0 https://github.com/hanneskaeufler/crytic.git /crytic
+          cd /crytic
           printf 'dependencies:\n  ameba:\n    github: crystal-ameba/ameba\n    branch: master\n' > shard.override.yml
           shards install
           shards build
+      # Domain specs only: they load the pure domain, no database or browser.
       - name: Mutate changed domain files
         run: |
+          git config --global --add safe.directory "$PWD"
+          git fetch --depth 1 origin "${{ github.base_ref }}"
+          specs=$(find spec/domain -name '*_spec.cr')
           changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
             | grep '^src/domain/.*\.cr$' || true)
           if [ -z "$changed" ]; then
@@ -131,7 +111,7 @@ jobs:
           status=0
           for file in $changed; do
             echo "::group::mutation $file"
-            /tmp/crytic/bin/crytic test --subject "$file" --min-msi 90 || status=1
+            /crytic/bin/crytic test --subject "$file" --min-msi 90 $specs || status=1
             echo "::endgroup::"
           done
           exit $status

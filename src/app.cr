@@ -1,4 +1,5 @@
 require "./shards"
+require "./domain/health"
 
 # Load the asset manifest
 Lucky::AssetHelpers.load_manifest(from: :bun)
@@ -12,6 +13,7 @@ require "./queries/mixins/**"
 require "./queries/**"
 require "./operations/mixins/**"
 require "./operations/**"
+require "./presenters/**"
 require "./serializers/base_serializer"
 require "./serializers/**"
 require "./emails/base_email"
