@@ -7,6 +7,7 @@ class RaidChecks::Create < BrowserAction
 
     RaidCheck::SaveOperation.create!(raid_step_id: target.record.id, user_id: current_user.id,
       period_start: target.view.period_start, checked_at: Time.utc)
+    XpLedger.sync_raid(target.record.raid_id)
     flash.success = "« #{target.step.title} » : c'est noté !"
     redirect Home::Index
   end

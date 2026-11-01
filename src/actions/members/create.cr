@@ -7,7 +7,8 @@ class Members::Create < BrowserAction
         flash.success = "#{member.name} fait partie de la famille."
         redirect Members::Index
       else
-        html_with_status IndexPage, 422, operation: operation, members: UserQuery.household.to_a
+        members = UserQuery.household.to_a
+        html_with_status IndexPage, 422, operation: operation, members: members, standings: Standings.of(members)
       end
     end
   end

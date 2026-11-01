@@ -16,6 +16,7 @@ class Raids::Admin < BaseComponent
       form_for Raids::Create do
         mount Shared::Field, attribute: operation.title, label_text: "Titre", &.text_input(flow_id: "raid-title")
         mount Quests::RecurrenceFields, frequency: operation.frequency, days: operation.days, id_prefix: "raid"
+        mount Shared::Field, attribute: operation.xp, label_text: "XP pour chaque participant", &.number_input(min: "1", max: "1000")
         submit "Créer le raid", flow_id: "add-raid"
       end
     end

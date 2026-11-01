@@ -2,6 +2,7 @@ require "./shards"
 require "./domain/health"
 require "./domain/family"
 require "./domain/quests"
+require "./domain/progression"
 
 # Load the asset manifest
 Lucky::AssetHelpers.load_manifest(from: :bun)

@@ -1,5 +1,6 @@
 class Members::Row < BaseComponent
   needs member : User
+  needs standing : Progression::Standing?
 
   def render
     li class: "member" do
@@ -7,6 +8,7 @@ class Members::Row < BaseComponent
         strong member.name
         span French.role(member.role), class: "member-role"
         access_text.try { |text| span text, class: "member-access" }
+        standing.try { |level| span "Rang #{level.rank} · #{level.xp} XP", class: "member-access" }
       end
       edit_form
       div class: "member-actions" do

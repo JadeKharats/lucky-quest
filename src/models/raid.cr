@@ -6,6 +6,7 @@ class Raid < BaseModel
     column frequency : Quests::Frequency
     column days_mask : Int32 = 0
     column archived_at : Time?
+    column xp : Int32 = 30
   end
 
   def recurrence : Quests::Recurrence

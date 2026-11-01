@@ -8,6 +8,7 @@ class RaidSteps::Delete < BrowserAction
     RaidStepQuery.of([step.raid_id]).to_a.each_with_index(1) do |other, position|
       RaidStep::SaveOperation.update!(other, position: position) unless other.position == position
     end
+    XpLedger.sync_raid(step.raid_id)
     flash.success = "Étape « #{step.title} » supprimée."
     redirect Quests::Index
   end

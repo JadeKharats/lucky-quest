@@ -7,6 +7,7 @@ class Home::IndexPage < MainLayout
 
   def content
     h1 "Bonjour #{current_user.name} !"
+    report.progress.try { |progress| mount Shared::ProgressCard, report: progress, buyer: current_user.role.buy_rewards? }
     weight_shortcut if current_user.role.keep_weight_log?
     validations_shortcut if report.awaiting_validation > 0
     report.raids.each do |view|

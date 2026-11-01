@@ -14,6 +14,13 @@ describe Quests::Create do
     quest.recurrence.should eq(Quests::Recurrence.daily)
   end
 
+  it "keeps the XP chosen by the parent" do
+    AppClient.new.exec(Quests::Create, backdoor_user_id: UserFactory.create.id,
+      quest: {title: "Ranger la chambre", user_id: child.id.to_s, frequency: "Daily", xp: "25"})
+
+    QuestQuery.new.first.xp.should eq(25)
+  end
+
   it "stores the chosen days" do
     parent = UserFactory.create
 

@@ -35,6 +35,7 @@ abstract class MainLayout
       nav do
         link "Quêtes", to: Quests::Index if role.manage_family?
         link "À valider", to: Validations::Index if role.validate_quests?
+        link "Boutique", to: Rewards::Index if role.buy_rewards? || role.manage_family?
         link "Poids", to: Weighings::Index if role.keep_weight_log?
         link "Famille", to: Members::Index if role.manage_family?
         link "Se déconnecter", to: SignIns::Delete, flow_id: "sign-out-button"

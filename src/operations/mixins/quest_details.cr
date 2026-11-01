@@ -1,4 +1,4 @@
-# Title and recurrence, as a parent fills them in. The days arrive as
+# Title, recurrence and XP, as a parent fills them in. The days arrive as
 # checkbox values "1" (Monday) … "7" (Sunday).
 module QuestDetails
   macro included
@@ -9,6 +9,7 @@ module QuestDetails
   private def check_quest_details
     validate_required title, message: "Donnez un titre à la quête."
     validate_required frequency, message: "Choisissez une fréquence."
+    validate_numeric xp, at_least: 1, no_more_than: 1000, message: "Donnez entre 1 et 1000 XP."
     days_mask.value = chosen_days_mask
   end
 

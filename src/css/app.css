@@ -427,3 +427,52 @@ select {
 .raid .member-actions [type='submit'] {
   margin-top: 8px;
 }
+
+/* Progression */
+.progress-head {
+  align-items: baseline;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.progress-rank {
+  font-size: 1.6rem;
+}
+
+.progress-xp {
+  color: var(--muted);
+}
+
+.bar {
+  background: var(--accent-soft);
+  border-radius: 999px;
+  height: 10px;
+  margin: 10px 0 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  background: var(--accent);
+  height: 100%;
+}
+
+.progress-streak {
+  font-weight: 600;
+  margin: 8px 0;
+}
+
+.progress-shop {
+  display: inline-block;
+  font-weight: 600;
+  margin: 4px 0 8px;
+  text-decoration: none;
+}
+
+.progress-recent {
+  color: var(--muted);
+  font-size: 0.9rem;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}

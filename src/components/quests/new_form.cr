@@ -9,6 +9,7 @@ class Quests::NewForm < BaseComponent
         mount Shared::Field, attribute: operation.title, label_text: "Titre", &.text_input(flow_id: "quest-title")
         member_field
         mount Quests::RecurrenceFields, frequency: operation.frequency, days: operation.days, id_prefix: "quest"
+        mount Shared::Field, attribute: operation.xp, label_text: "XP", &.number_input(min: "1", max: "1000")
         submit "Ajouter", flow_id: "add-quest"
       end
     end

@@ -7,6 +7,7 @@ class RaidChecks::Delete < BrowserAction
     raise Lucky::RouteNotFoundError.new(context) unless target.view.progress.can_undo?(current_user.id, target.step)
 
     RaidCheckQuery.new.raid_step_id(target.record.id).user_id(current_user.id).period_start(target.view.period_start).delete
+    XpLedger.sync_raid(target.record.raid_id)
     flash.info = "« #{target.step.title} » est de nouveau à faire."
     redirect Home::Index
   end

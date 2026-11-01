@@ -2,7 +2,7 @@ class CreateQuest < Quest::SaveOperation
   param_key :quest
   include QuestDetails
 
-  permit_columns title, user_id, frequency
+  permit_columns title, user_id, frequency, xp
 
   before_save do
     check_member

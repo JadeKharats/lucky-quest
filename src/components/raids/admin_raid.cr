@@ -6,7 +6,7 @@ class Raids::AdminRaid < BaseComponent
     raid = row.raid
     section class: "card quests" do
       h2 raid.title
-      para French.recurrence(raid.recurrence), class: "quest-state"
+      para "#{French.recurrence(raid.recurrence)} · #{raid.xp} XP pour chacun", class: "quest-state"
       ol class: "raid-steps" do
         row.steps.each { |step| step_item(step) }
       end
@@ -57,6 +57,7 @@ class Raids::AdminRaid < BaseComponent
       form_for Raids::Update.with(row.raid.id) do
         mount Shared::Field, attribute: operation.title, label_text: "Titre", &.text_input
         mount Quests::RecurrenceFields, frequency: operation.frequency, days: operation.days, id_prefix: "raid_#{row.raid.id}"
+        mount Shared::Field, attribute: operation.xp, label_text: "XP pour chaque participant", &.number_input(min: "1", max: "1000")
         submit "Enregistrer"
       end
       form_for Raids::Archive.with(row.raid.id), class: "secondary" do

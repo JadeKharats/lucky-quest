@@ -22,6 +22,19 @@ module Auth::RequireQuestValidator
   end
 end
 
+module Auth::RequireShop
+  macro included
+    before require_shop
+  end
+
+  # Parents run the shop, children buy; guests see nothing of it.
+  private def require_shop
+    role = current_user.role
+    raise Lucky::RouteNotFoundError.new(context) unless role.buy_rewards? || role.manage_family?
+    continue
+  end
+end
+
 module Auth::RequireWeightLog
   macro included
     before require_weight_log

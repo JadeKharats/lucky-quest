@@ -15,6 +15,11 @@ class RaidBoard
     build([raid], now).first?
   end
 
+  # A raid in its current period, due today or not.
+  def self.for_raid(raid : Raid, now : Time = Time.local(Household::TIME_ZONE)) : View
+    build([raid], now).first
+  end
+
   def self.domain_raids(raids : Array(Raid)) : Array(Quests::Raid)
     steps = RaidStepQuery.of(raids.map(&.id)).to_a
     participants = RaidStepParticipantQuery.new

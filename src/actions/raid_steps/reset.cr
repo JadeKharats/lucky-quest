@@ -7,6 +7,7 @@ class RaidSteps::Reset < BrowserAction
     target = due_step(raid_step_id)
     step_ids = target.view.progress.steps_from(target.step).map(&.id)
     RaidCheckQuery.new.raid_step_id.in(step_ids).period_start(target.view.period_start).delete
+    XpLedger.sync_raid(target.record.raid_id)
     flash.info = "« #{target.step.title} » et la suite sont de nouveau à faire."
     redirect Home::Index
   end

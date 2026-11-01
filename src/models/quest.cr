@@ -8,6 +8,7 @@ class Quest < BaseModel
     # Chosen days, bit 0 = Monday … bit 6 = Sunday (Weekdays only).
     column days_mask : Int32 = 0
     column archived_at : Time?
+    column xp : Int32 = 10
   end
 
   def recurrence : Quests::Recurrence

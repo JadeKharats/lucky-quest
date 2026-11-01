@@ -24,3 +24,11 @@ end
 def today_in_paris : Time
   Time.local(Household::TIME_ZONE)
 end
+
+def earn(member : User, amount : Int32, label = "Bonus") : XpEntry
+  XpEntry::SaveOperation.create!(user_id: member.id, amount: amount, label: label, earned_at: Time.utc)
+end
+
+def xp_of(member : User) : Int64
+  XpEntryQuery.new.user_id(member.id).to_a.sum(&.amount.to_i64)
+end
