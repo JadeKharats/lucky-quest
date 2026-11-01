@@ -37,6 +37,18 @@ describe Family::Role do
     Family::Role::Guest.buy_rewards?.should be_false
   end
 
+  it "lets parents and guests plan the meals" do
+    Family::Role::Parent.plan_meals?.should be_true
+    Family::Role::Guest.plan_meals?.should be_true
+    Family::Role::Child.plan_meals?.should be_false
+  end
+
+  it "lets only children enter their canteen menu" do
+    Family::Role::Child.enter_canteen_menu?.should be_true
+    Family::Role::Parent.enter_canteen_menu?.should be_false
+    Family::Role::Guest.enter_canteen_menu?.should be_false
+  end
+
   it "limits only guests in time" do
     Family::Role::Guest.time_limited?.should be_true
     Family::Role::Parent.time_limited?.should be_false

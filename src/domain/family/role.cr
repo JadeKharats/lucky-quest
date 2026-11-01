@@ -30,6 +30,16 @@ module Family
       child?
     end
 
+    # Grandparents may be the ones cooking during the holidays.
+    def plan_meals? : Bool
+      !child?
+    end
+
+    # Each daughter copies her own school's menu.
+    def enter_canteen_menu? : Bool
+      child?
+    end
+
     # Guests (the grandparents) come in for a while, the household for good.
     def time_limited? : Bool
       guest?
