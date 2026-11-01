@@ -1,12 +1,15 @@
 require "../spec_helper"
 
 # Quest is a private family tool: accounts come from `lucky users.create`,
-# and there is no email to reset a password with.
+# there is no email to reset a password with, and the browser session is the
+# only way in (no token API).
 describe "Account routes" do
   {
     {"GET", "/sign_up"},
     {"POST", "/sign_up"},
     {"POST", "/api/sign_ups"},
+    {"POST", "/api/sign_ins"},
+    {"GET", "/api/me"},
     {"GET", "/password_reset_requests/new"},
     {"POST", "/password_reset_requests"},
     {"GET", "/password_resets/1/edit"},
