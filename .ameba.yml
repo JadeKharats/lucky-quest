@@ -3,10 +3,11 @@
 Lint/UselessAssign:
   ExcludeTypeDeclarations: true
 
-# spec/setup holds Lucky's spec hooks, not specs.
+# spec/setup holds Lucky's spec hooks, not specs. `Excluded` works on every
+# ameba version (the rule's own option was renamed on master).
 Lint/SpecFilename:
-  IgnoredDirs: [spec/support, spec/fixtures, spec/data, spec/setup]
-  IgnoredFilenames: [spec_helper]
+  Excluded:
+    - spec/setup/**
 
 Globs:
   - "**/*.cr"
