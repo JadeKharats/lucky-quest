@@ -47,3 +47,12 @@ end
 def next_monday : Time
   today_in_paris.at_beginning_of_week.shift(days: 7)
 end
+
+def activity_record(title = "Danse", participants = [] of User, weekly = true, starts_on = next_monday.shift(days: 2),
+                    driver_to : User? = nil, driver_back : User? = nil, needs_ride = true) : Activity
+  record = Activity::SaveOperation.create!(title: title, place: "Studio", starts_on: starts_on,
+    start_minutes: 14 * 60, end_minutes: 15 * 60 + 30, weekly: weekly, needs_ride: needs_ride,
+    driver_to_id: driver_to.try(&.id), driver_back_id: driver_back.try(&.id))
+  participants.each { |member| ActivityParticipant::SaveOperation.create!(activity_id: record.id, user_id: member.id) }
+  record
+end

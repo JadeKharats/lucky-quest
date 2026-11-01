@@ -57,6 +57,17 @@ module Auth::RequireCanteenEditor
   end
 end
 
+module Auth::RequireDriver
+  macro included
+    before require_driver
+  end
+
+  private def require_driver
+    raise Lucky::RouteNotFoundError.new(context) unless current_user.role.drive?
+    continue
+  end
+end
+
 module Auth::RequireWeightLog
   macro included
     before require_weight_log

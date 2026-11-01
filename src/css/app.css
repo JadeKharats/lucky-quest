@@ -514,3 +514,32 @@ select {
 .canteen-day legend {
   font-weight: 700;
 }
+
+/* Agenda */
+.trip {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 6px;
+}
+
+form.inline {
+  display: inline;
+}
+
+form.inline [type='submit'] {
+  font-size: 0.9rem;
+  margin-top: 0;
+  padding: 6px 12px;
+}
+
+.cancelled .quest-title {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
+select:not([multiple]) {
+  max-width: 320px;
+  width: 100%;
+}

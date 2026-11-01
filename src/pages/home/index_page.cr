@@ -10,6 +10,7 @@ class Home::IndexPage < MainLayout
     report.progress.try { |progress| mount Shared::ProgressCard, report: progress, buyer: current_user.role.buy_rewards? }
     weight_shortcut if current_user.role.keep_weight_log?
     validations_shortcut if report.awaiting_validation > 0
+    mount AgendaPlan::Upcoming, upcoming: report.upcoming, open_trips: report.open_trips, names: report.names
     report.raids.each do |view|
       mount Raids::Card, raid_view: view, member: current_user, names: report.names
     end

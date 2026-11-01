@@ -16,6 +16,8 @@ class User < BaseModel
     column session_generation : Int32 = 0
     # Children only: whose canteen menu is hers.
     belongs_to school : School?
+    # The secret link of her calendar feed, digested like access links.
+    column calendar_token_digest : String?
   end
 
   def emailable : Carbon::Address
