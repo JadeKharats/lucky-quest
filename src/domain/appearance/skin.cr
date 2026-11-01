@@ -1,15 +1,20 @@
 module Appearance
-  # Inspired by, never copied: no names, logos or assets of other works.
-  # Stored values never change.
+  # How a member's Quest looks. Stored values never change and are never
+  # reused: 2 was Galaxie, dropped in M10.
   enum Skin
     Classic = 0
     System  = 1
-    Galaxy  = 2
+    Animals = 3
+    Dance   = 4
 
-    # Classique follows the device's light / dark mode; the others are night
-    # skins by nature.
     def always_dark? : Bool
-      !classic?
+      system? || dance?
+    end
+
+    # Only Classique follows the device's light / dark mode; Animaux is
+    # always light.
+    def follows_device? : Bool
+      classic?
     end
   end
 end
