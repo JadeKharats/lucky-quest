@@ -40,6 +40,11 @@ module Family
       child?
     end
 
+    # Parents and grandparents drive the children to their activities.
+    def drive? : Bool
+      !child?
+    end
+
     # Guests (the grandparents) come in for a while, the household for good.
     def time_limited? : Bool
       guest?

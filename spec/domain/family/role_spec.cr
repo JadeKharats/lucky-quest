@@ -49,6 +49,12 @@ describe Family::Role do
     Family::Role::Guest.enter_canteen_menu?.should be_false
   end
 
+  it "lets parents and guests drive" do
+    Family::Role::Parent.drive?.should be_true
+    Family::Role::Guest.drive?.should be_true
+    Family::Role::Child.drive?.should be_false
+  end
+
   it "limits only guests in time" do
     Family::Role::Guest.time_limited?.should be_true
     Family::Role::Parent.time_limited?.should be_false
