@@ -1,14 +1,15 @@
 class Quests::AgendaView < BaseComponent
   needs agenda : Quests::Agenda
+  needs words : Lexicon
 
   def render
     if agenda.today.empty? && agenda.this_week.empty?
       section class: "card" do
-        para "Aucune quête pour l'instant.", class: "empty"
+        para words.no_quests, class: "empty"
       end
     else
-      list "Aujourd'hui", agenda.today
-      list "Cette semaine", agenda.this_week
+      list words.today, agenda.today
+      list words.this_week, agenda.this_week
     end
   end
 
@@ -18,7 +19,7 @@ class Quests::AgendaView < BaseComponent
     section class: "card quests" do
       h2 heading
       ul do
-        occurrences.each { |occurrence| mount Quests::OccurrenceRow, occurrence: occurrence }
+        occurrences.each { |occurrence| mount Quests::OccurrenceRow, occurrence: occurrence, words: words }
       end
     end
   end

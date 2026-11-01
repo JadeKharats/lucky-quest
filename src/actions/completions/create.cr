@@ -9,7 +9,7 @@ class Completions::Create < BrowserAction
     period = quest.recurrence.period_start(today)
     unless CompletionQuery.new.quest_id(quest.id).period_start(period).first?
       CompleteQuest.create!(quest_id: quest.id, member: current_user, period: period)
-      flash.success = "Bravo, « #{quest.title} » est faite !"
+      flash.success = Lexicon.for(current_user.skin).quest_done(quest.title)
     end
     redirect Home::Index
   end

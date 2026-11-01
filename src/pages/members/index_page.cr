@@ -10,7 +10,7 @@ class Members::IndexPage < MainLayout
 
   def content
     h1 "Famille"
-    mount Members::List, members: members, standings: standings, schools: schools
+    mount Members::List, members: members, standings: standings, schools: schools, words: words
     mount Members::NewForm, operation: operation
     mount Members::SchoolList, schools: schools
   end

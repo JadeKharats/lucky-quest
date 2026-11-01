@@ -5,16 +5,16 @@ class Rewards::IndexPage < MainLayout
   needs purchases : Array(Purchase)
 
   def page_title
-    "Boutique"
+    words.shop
   end
 
   def content
-    h1 "Boutique"
+    h1 words.shop
     if current_user.role.buy_rewards?
-      mount Rewards::Shelf, rewards: rewards, wallet: wallet
+      mount Rewards::Shelf, rewards: rewards, wallet: wallet, words: words
       mount Rewards::MyPurchases, purchases: purchases
     else
-      mount Rewards::ToHandOver, purchases: purchases
+      mount Rewards::ToHandOver, purchases: purchases, words: words
       mount Rewards::Manage, rewards: rewards, operation: operation
     end
   end

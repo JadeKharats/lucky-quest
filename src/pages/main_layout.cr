@@ -11,10 +11,15 @@ abstract class MainLayout
     "Quest"
   end
 
+  # The game's words in the viewer's skin.
+  def words : Lexicon
+    Lexicon.for(current_user.skin)
+  end
+
   def render
     html_doctype
 
-    html lang: "fr" do
+    html lang: "fr", "data-skin": current_user.skin.to_s.downcase do
       mount Shared::LayoutHead, page_title: page_title
 
       body do
@@ -36,9 +41,9 @@ abstract class MainLayout
         link "Agenda", to: Schedules::Index
         link "Repas", to: Meals::Index
         link "Cantine", to: Canteen::Index if role.enter_canteen_menu?
-        link "Quêtes", to: Quests::Index if role.manage_family?
+        link words.quests, to: Quests::Index if role.manage_family?
         link "À valider", to: Validations::Index if role.validate_quests?
-        link "Boutique", to: Rewards::Index if role.buy_rewards? || role.manage_family?
+        link words.shop, to: Rewards::Index if role.buy_rewards? || role.manage_family?
         link "Poids", to: Weighings::Index if role.keep_weight_log?
         link "Famille", to: Members::Index if role.manage_family?
         link "Se déconnecter", to: SignIns::Delete, flow_id: "sign-out-button"

@@ -18,6 +18,8 @@ class User < BaseModel
     belongs_to school : School?
     # The secret link of her calendar feed, digested like access links.
     column calendar_token_digest : String?
+    # How Quest looks for her, on all her devices.
+    column skin : Appearance::Skin = Appearance::Skin::Classic
   end
 
   def emailable : Carbon::Address

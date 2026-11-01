@@ -1,5 +1,6 @@
 class Rewards::ToHandOver < BaseComponent
   needs purchases : Array(Purchase)
+  needs words : Lexicon
 
   def render
     section class: "card quests" do
@@ -18,7 +19,7 @@ class Rewards::ToHandOver < BaseComponent
     li class: "quest" do
       div class: "quest-title" do
         strong purchase.reward.title
-        span "#{purchase.user.name} · #{purchase.cost} XP · #{French.date(purchase.bought_at.in(Household::TIME_ZONE))}", class: "quest-state"
+        span "#{purchase.user.name} · #{words.points(purchase.cost)} · #{French.date(purchase.bought_at.in(Household::TIME_ZONE))}", class: "quest-state"
       end
       div class: "member-actions" do
         form_for Purchases::Hand.with(purchase.id) do

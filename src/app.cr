@@ -5,6 +5,7 @@ require "./domain/quests"
 require "./domain/progression"
 require "./domain/meals"
 require "./domain/agenda"
+require "./domain/appearance"
 
 # Load the asset manifest
 Lucky::AssetHelpers.load_manifest(from: :bun)

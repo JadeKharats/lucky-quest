@@ -3,13 +3,14 @@ class Raids::Card < BaseComponent
   needs raid_view : RaidBoard::View
   needs member : User
   needs names : Hash(Int64, String)
+  needs words : Lexicon
 
   def render
     progress = raid_view.progress
     section class: "card raid" do
-      h2 "Raid : #{raid_view.raid.title}"
+      h2 words.raid(raid_view.raid.title)
       if progress.finished?
-        para "Raid terminé, bravo à toute la famille !", class: "raid-finished"
+        para words.raid_finished, class: "raid-finished"
       end
       ol class: "raid-steps" do
         raid_view.raid.steps.each { |step| step_row(step) }
@@ -48,7 +49,7 @@ class Raids::Card < BaseComponent
     div class: "member-actions" do
       if progress.can_check?(member.id, step)
         form_for RaidChecks::Create.with(step.id) do
-          submit "C'est fait !", flow_id: "raid-done-#{step.id}"
+          submit words.done, flow_id: "raid-done-#{step.id}"
         end
       end
       if progress.can_undo?(member.id, step)

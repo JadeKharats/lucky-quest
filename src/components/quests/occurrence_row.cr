@@ -1,5 +1,6 @@
 class Quests::OccurrenceRow < BaseComponent
   needs occurrence : Quests::Occurrence
+  needs words : Lexicon
 
   STATES = {
     Quests::Status::ToDo      => "à faire",
@@ -13,7 +14,7 @@ class Quests::OccurrenceRow < BaseComponent
       span quest.title, class: "quest-title"
       if occurrence.status.to_do?
         form_for Completions::Create.with(quest.id), class: "quest-done" do
-          submit "C'est fait !", flow_id: "done-#{quest.id}"
+          submit words.done, flow_id: "done-#{quest.id}"
         end
       else
         span STATES[occurrence.status], class: "quest-state"

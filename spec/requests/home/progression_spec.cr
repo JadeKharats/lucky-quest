@@ -17,6 +17,6 @@ describe "Progression on the home page" do
   end
 
   it "shows no progression to a guest" do
-    AppClient.new.exec(Home::Index, backdoor_user_id: guest.id).body.should_not contain("Rang ")
+    AppClient.new.exec(Home::Index, backdoor_user_id: guest.id).body.should_not contain("progress-rank")
   end
 end
