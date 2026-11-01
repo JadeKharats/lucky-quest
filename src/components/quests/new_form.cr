@@ -10,6 +10,7 @@ class Quests::NewForm < BaseComponent
         member_field
         mount Quests::RecurrenceFields, frequency: operation.frequency, days: operation.days, id_prefix: "quest"
         mount Shared::Field, attribute: operation.xp, label_text: "XP", &.number_input(min: "1", max: "1000")
+        mount Quests::CanteenMenuField, attribute: operation.canteen_menu, id: "quest_canteen_menu"
         submit "Ajouter", flow_id: "add-quest"
       end
     end

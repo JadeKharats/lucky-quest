@@ -8,7 +8,7 @@ class Members::Create < BrowserAction
         redirect Members::Index
       else
         members = UserQuery.household.to_a
-        html_with_status IndexPage, 422, operation: operation, members: members, standings: Standings.of(members)
+        html_with_status IndexPage, 422, operation: operation, members: members, standings: Standings.of(members), schools: SchoolQuery.ordered.to_a
       end
     end
   end

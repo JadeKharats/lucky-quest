@@ -9,6 +9,8 @@ class Quest < BaseModel
     column days_mask : Int32 = 0
     column archived_at : Time?
     column xp : Int32 = 10
+    # Done by itself when its daughter has entered next week's canteen menu.
+    column canteen_menu : Bool = false
   end
 
   def recurrence : Quests::Recurrence

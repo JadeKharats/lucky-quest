@@ -47,6 +47,12 @@ describe French do
     French.names(["Lina", "Emma", "David"]).should eq("Lina, Emma et David")
   end
 
+  it "names the main tags and the days" do
+    French.tag(Meals::MainTag::Fish).should eq("poisson")
+    French.tag(Meals::MainTag::PizzaTart).should eq("pizza / tarte")
+    French.weekday_date(Time.local(2026, 11, 9)).should eq("lun. 9 nov.")
+  end
+
   it "names each role" do
     French.role(Family::Role::Parent).should eq("Parent")
     French.role(Family::Role::Child).should eq("Enfant")

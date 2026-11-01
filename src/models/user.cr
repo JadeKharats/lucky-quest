@@ -14,6 +14,8 @@ class User < BaseModel
     column access_ends_at : Time?
     # Bumped to sign every device of the member out.
     column session_generation : Int32 = 0
+    # Children only: whose canteen menu is hers.
+    belongs_to school : School?
   end
 
   def emailable : Carbon::Address

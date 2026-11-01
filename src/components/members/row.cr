@@ -1,6 +1,7 @@
 class Members::Row < BaseComponent
   needs member : User
   needs standing : Progression::Standing?
+  needs schools : Array(School)
 
   def render
     li class: "member" do
@@ -26,6 +27,13 @@ class Members::Row < BaseComponent
     member.access_window.last_day.try { |day| "jusqu'au #{French.date(day.in(Household::TIME_ZONE))} inclus" }
   end
 
+  private def school_field(operation : UpdateMember)
+    label "École", for: "member_#{member.id}_school"
+    select_input operation.school_id, id: "member_#{member.id}_school" do
+      options_for_select operation.school_id, schools.map { |school| {school.name, school.id} }
+    end
+  end
+
   private def edit_form
     operation = UpdateMember.form_for(member)
     details class: "member-edit" do
@@ -35,6 +43,7 @@ class Members::Row < BaseComponent
         if member.role.time_limited?
           mount Shared::DateField, attribute: operation.last_day, label_text: "Dernier jour d'accès", id: "member_#{member.id}_last_day"
         end
+        school_field(operation) if member.role.child? && !schools.empty?
         submit "Enregistrer"
       end
     end

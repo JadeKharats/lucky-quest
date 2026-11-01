@@ -27,6 +27,7 @@ class Quests::MemberQuests < BaseComponent
           mount Shared::Field, attribute: operation.title, label_text: "Titre", &.text_input
           mount Quests::RecurrenceFields, frequency: operation.frequency, days: operation.days, id_prefix: "quest_#{quest.id}"
           mount Shared::Field, attribute: operation.xp, label_text: "XP", &.number_input(min: "1", max: "1000")
+          mount Quests::CanteenMenuField, attribute: operation.canteen_menu, id: "quest_#{quest.id}_canteen_menu"
           submit "Enregistrer"
         end
         form_for Quests::Archive.with(quest.id), class: "secondary" do

@@ -33,6 +33,8 @@ abstract class MainLayout
     header class: "site-header" do
       link "Quest", to: Home::Index, class: "site-name"
       nav do
+        link "Repas", to: Meals::Index
+        link "Cantine", to: Canteen::Index if role.enter_canteen_menu?
         link "Quêtes", to: Quests::Index if role.manage_family?
         link "À valider", to: Validations::Index if role.validate_quests?
         link "Boutique", to: Rewards::Index if role.buy_rewards? || role.manage_family?

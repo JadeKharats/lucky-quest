@@ -35,6 +35,28 @@ module Auth::RequireShop
   end
 end
 
+module Auth::RequireMealPlanner
+  macro included
+    before require_meal_planner
+  end
+
+  private def require_meal_planner
+    raise Lucky::RouteNotFoundError.new(context) unless current_user.role.plan_meals?
+    continue
+  end
+end
+
+module Auth::RequireCanteenEditor
+  macro included
+    before require_canteen_editor
+  end
+
+  private def require_canteen_editor
+    raise Lucky::RouteNotFoundError.new(context) unless current_user.role.enter_canteen_menu?
+    continue
+  end
+end
+
 module Auth::RequireWeightLog
   macro included
     before require_weight_log

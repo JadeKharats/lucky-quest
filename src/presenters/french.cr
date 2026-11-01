@@ -50,6 +50,31 @@ module French
     "#{list[0..-2].join(", ")} et #{list.last}"
   end
 
+  TAGS = {
+    Meals::MainTag::Pasta      => "pâtes",
+    Meals::MainTag::Rice       => "riz",
+    Meals::MainTag::Potatoes   => "pommes de terre",
+    Meals::MainTag::Legumes    => "légumineuses",
+    Meals::MainTag::Fish       => "poisson",
+    Meals::MainTag::Poultry    => "volaille",
+    Meals::MainTag::Beef       => "bœuf",
+    Meals::MainTag::Pork       => "porc",
+    Meals::MainTag::Lamb       => "agneau",
+    Meals::MainTag::Eggs       => "œufs",
+    Meals::MainTag::PizzaTart  => "pizza / tarte",
+    Meals::MainTag::Vegetarian => "végétarien",
+    Meals::MainTag::Other      => "autre",
+  }
+
+  def tag(tag : Meals::MainTag) : String
+    TAGS[tag]
+  end
+
+  # "lun. 9 nov."
+  def weekday_date(day : Time) : String
+    "#{weekday(day.day_of_week)} #{date(day)}"
+  end
+
   WEEKDAYS = %w[lun. mar. mer. jeu. ven. sam. dim.]
 
   def frequency(frequency : Quests::Frequency) : String

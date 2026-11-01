@@ -32,3 +32,18 @@ end
 def xp_of(member : User) : Int64
   XpEntryQuery.new.user_id(member.id).to_a.sum(&.amount.to_i64)
 end
+
+WEEKDAYS_MASK = 0b0011111 # Monday to Friday
+
+def school(name = "École du Parc", mask = WEEKDAYS_MASK) : School
+  School::SaveOperation.create!(name: name, days_mask: mask)
+end
+
+def pupil(name : String, school : School) : User
+  member = child(name)
+  User::SaveOperation.update!(member, school_id: school.id)
+end
+
+def next_monday : Time
+  today_in_paris.at_beginning_of_week.shift(days: 7)
+end

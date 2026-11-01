@@ -14,6 +14,13 @@ describe Quests::Create do
     quest.recurrence.should eq(Quests::Recurrence.daily)
   end
 
+  it "marks a quest as the canteen menu" do
+    AppClient.new.exec(Quests::Create, backdoor_user_id: UserFactory.create.id,
+      quest: {title: "Menu de la cantine", user_id: child.id.to_s, frequency: "Weekly", canteen_menu: "true"})
+
+    QuestQuery.new.first.canteen_menu.should be_true
+  end
+
   it "keeps the XP chosen by the parent" do
     AppClient.new.exec(Quests::Create, backdoor_user_id: UserFactory.create.id,
       quest: {title: "Ranger la chambre", user_id: child.id.to_s, frequency: "Daily", xp: "25"})
