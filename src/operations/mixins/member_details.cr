@@ -26,7 +26,7 @@ module MemberDetails
   end
 
   private def parse_last_day : Time?
-    Time.parse(last_day.value.to_s.strip, DATE_FORMAT, Quest::TIME_ZONE)
+    Time.parse(last_day.value.to_s.strip, DATE_FORMAT, Household::TIME_ZONE)
   rescue Time::Format::Error
     nil
   end

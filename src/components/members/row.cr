@@ -21,7 +21,7 @@ class Members::Row < BaseComponent
   end
 
   private def access_text : String?
-    member.access_window.last_day.try { |day| "jusqu'au #{French.date(day.in(Quest::TIME_ZONE))} inclus" }
+    member.access_window.last_day.try { |day| "jusqu'au #{French.date(day.in(Household::TIME_ZONE))} inclus" }
   end
 
   private def edit_form

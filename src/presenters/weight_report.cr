@@ -16,14 +16,14 @@ class WeightReport
   end
 
   def self.for(owner : User, now : Time = Time.utc) : self
-    today = now.in(Quest::TIME_ZONE).at_beginning_of_day
+    today = now.in(Household::TIME_ZONE).at_beginning_of_day
     curve_from = today.shift(days: -CURVE_DAYS)
     # A week more than the curve, so its first points have a full average.
     weighings = WeighingQuery.owned_by(owner)
       .since(curve_from.shift(days: -Health::MovingAverage::WINDOW_DAYS))
       .newest_first
       .to_a
-    summary = Health::Summary.new(weighings.map(&.to_domain), today: now, location: Quest::TIME_ZONE)
+    summary = Health::Summary.new(weighings.map(&.to_domain), today: now, location: Household::TIME_ZONE)
 
     new(summary, weighings.first(RECENT), curve_from)
   end

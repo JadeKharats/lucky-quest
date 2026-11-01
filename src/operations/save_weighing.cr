@@ -18,7 +18,7 @@ class SaveWeighing < Weighing::SaveOperation
 
   # The value the date-time field starts with: now, in Paris.
   def self.now_local : String
-    Time.local(Quest::TIME_ZONE).to_s(DATE_TIME_FORMAT)
+    Time.local(Household::TIME_ZONE).to_s(DATE_TIME_FORMAT)
   end
 
   private def read_weight
@@ -30,7 +30,7 @@ class SaveWeighing < Weighing::SaveOperation
   end
 
   private def read_measured_at
-    measured_at.value = Time.parse(measured_at_local.value.to_s, DATE_TIME_FORMAT, Quest::TIME_ZONE)
+    measured_at.value = Time.parse(measured_at_local.value.to_s, DATE_TIME_FORMAT, Household::TIME_ZONE)
   rescue Time::Format::Error
     measured_at_local.add_error "Indiquez la date et heure de la pesée."
   end

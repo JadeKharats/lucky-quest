@@ -33,7 +33,7 @@ describe AccessLinks::Redeem do
   end
 
   it "refuses a guest whose access has ended" do
-    token = issue_access_link(guest(last_day: Time.local(Quest::TIME_ZONE).shift(days: -1)))
+    token = issue_access_link(guest(last_day: Time.local(Household::TIME_ZONE).shift(days: -1)))
 
     response = AppClient.new.exec(AccessLinks::Redeem.with(token))
 

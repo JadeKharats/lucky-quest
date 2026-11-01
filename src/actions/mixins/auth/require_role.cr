@@ -11,6 +11,17 @@ module Auth::RequireFamilyManager
   end
 end
 
+module Auth::RequireQuestValidator
+  macro included
+    before require_quest_validator
+  end
+
+  private def require_quest_validator
+    raise Lucky::RouteNotFoundError.new(context) unless current_user.role.validate_quests?
+    continue
+  end
+end
+
 module Auth::RequireWeightLog
   macro included
     before require_weight_log

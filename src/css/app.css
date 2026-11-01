@@ -310,3 +310,84 @@ select {
   font-size: 0.9rem !important;
   max-width: 100% !important;
 }
+
+/* Quests */
+.quests ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.quest {
+  align-items: center;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.quest:first-child {
+  border-top: 0;
+}
+
+.quest-title {
+  align-items: baseline;
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quest-state {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.quest-validated .quest-state {
+  color: var(--success);
+}
+
+.quest-done [type='submit'],
+.quest .member-actions [type='submit'] {
+  margin-top: 0;
+}
+
+.quest .member-edit {
+  flex-basis: 100%;
+}
+
+.shortcut a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.days {
+  border: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.days legend {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.days .day {
+  align-items: center;
+  display: flex;
+  font-weight: 400;
+  gap: 4px;
+  margin: 0;
+}
+
+.days input[type='checkbox'] {
+  display: inline;
+  height: 22px;
+  margin: 0;
+  width: 22px;
+}

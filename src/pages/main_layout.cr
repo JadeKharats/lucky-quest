@@ -33,6 +33,8 @@ abstract class MainLayout
     header class: "site-header" do
       link "Quest", to: Home::Index, class: "site-name"
       nav do
+        link "Quêtes", to: Quests::Index if role.manage_family?
+        link "À valider", to: Validations::Index if role.validate_quests?
         link "Poids", to: Weighings::Index if role.keep_weight_log?
         link "Famille", to: Members::Index if role.manage_family?
         link "Se déconnecter", to: SignIns::Delete, flow_id: "sign-out-button"

@@ -22,7 +22,7 @@ describe Members::Create do
 
     member = UserQuery.new.name("Mamie").first
     member.role.should eq(Family::Role::Guest)
-    member.access_ends_at.should eq(Time.local(2027, 1, 1, location: Quest::TIME_ZONE))
+    member.access_ends_at.should eq(Time.local(2027, 1, 1, location: Household::TIME_ZONE))
   end
 
   it "asks for a guest's last day" do

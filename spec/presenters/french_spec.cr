@@ -23,6 +23,18 @@ describe French do
     French.date(Time.local(2026, 2, 3)).should eq("3 févr.")
   end
 
+  it "describes a recurrence" do
+    French.recurrence(Quests::Recurrence.daily).should eq("Tous les jours")
+    French.recurrence(Quests::Recurrence.weekly).should eq("Une fois par semaine")
+    days = [Time::DayOfWeek::Friday, Time::DayOfWeek::Monday]
+    French.recurrence(Quests::Recurrence.on(days)).should eq("lun., ven.")
+  end
+
+  it "names the period of an occurrence" do
+    French.period(Time.local(2026, 11, 4), weekly: false).should eq("4 nov.")
+    French.period(Time.local(2026, 11, 2), weekly: true).should eq("semaine du 2 nov.")
+  end
+
   it "names each role" do
     French.role(Family::Role::Parent).should eq("Parent")
     French.role(Family::Role::Child).should eq("Enfant")

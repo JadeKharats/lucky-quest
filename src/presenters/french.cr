@@ -29,6 +29,33 @@ module French
     ROLES[role]
   end
 
+  FREQUENCIES = {
+    Quests::Frequency::Daily    => "Tous les jours",
+    Quests::Frequency::Weekdays => "Certains jours",
+    Quests::Frequency::Weekly   => "Une fois par semaine",
+  }
+
+  WEEKDAYS = %w[lun. mar. mer. jeu. ven. sam. dim.]
+
+  def frequency(frequency : Quests::Frequency) : String
+    FREQUENCIES[frequency]
+  end
+
+  def weekday(day : Time::DayOfWeek) : String
+    WEEKDAYS[day.value - 1]
+  end
+
+  # "Tous les jours", "lun., ven.", "Une fois par semaine".
+  def recurrence(recurrence : Quests::Recurrence) : String
+    return frequency(recurrence.frequency) unless recurrence.frequency.weekdays?
+    recurrence.days.to_a.sort_by(&.value).join(", ") { |day| weekday(day) }
+  end
+
+  # The occurrence a completion belongs to: "4 nov." or "semaine du 2 nov.".
+  def period(start : Time, weekly : Bool) : String
+    weekly ? "semaine du #{date(start)}" : date(start)
+  end
+
   def date_time(time : Time) : String
     "#{date(time)} à #{time.to_s("%H:%M")}"
   end

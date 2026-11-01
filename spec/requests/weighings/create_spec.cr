@@ -12,7 +12,7 @@ describe Weighings::Create do
     response.headers["Location"].should eq(Weighings::Index.path)
     weighing = WeighingQuery.new.user_id(owner.id).first
     weighing.kilograms.should eq(72.4)
-    weighing.measured_at.should eq(Time.local(2026, 11, 1, 8, 30, location: Quest::TIME_ZONE))
+    weighing.measured_at.should eq(Time.local(2026, 11, 1, 8, 30, location: Household::TIME_ZONE))
   end
 
   it "belongs to the signed-in account, whatever the params say" do

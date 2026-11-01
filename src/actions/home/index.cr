@@ -1,9 +1,5 @@
 class Home::Index < BrowserAction
   get "/" do
-    if current_user.role.keep_weight_log?
-      redirect Weighings::Index
-    else
-      html Home::WelcomePage
-    end
+    html Home::IndexPage, report: HomeReport.for(current_user)
   end
 end

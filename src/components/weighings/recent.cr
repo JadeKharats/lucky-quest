@@ -13,7 +13,7 @@ class Weighings::Recent < BaseComponent
   end
 
   private def row(weighing : Weighing)
-    when_text = French.date_time(weighing.measured_at.in(Quest::TIME_ZONE))
+    when_text = French.date_time(weighing.measured_at.in(Household::TIME_ZONE))
     li do
       span when_text, class: "recent-when"
       strong French.kilograms(weighing.kilograms), class: "recent-weight"

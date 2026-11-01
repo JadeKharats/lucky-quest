@@ -6,7 +6,7 @@ class Weighings::Overview < BaseComponent
     section class: "overview" do
       if latest = summary.latest
         stat "Dernière pesée", French.kilograms(latest.kilograms.value),
-          French.date_time(latest.measured_at.in(Quest::TIME_ZONE))
+          French.date_time(latest.measured_at.in(Household::TIME_ZONE))
         stat "Moyenne sur 7 jours", summary.average.try { |kilos| French.kilograms(kilos) } || "—"
         stat "Tendance", *trend_text
       else

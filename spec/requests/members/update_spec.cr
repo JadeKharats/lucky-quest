@@ -11,7 +11,7 @@ describe Members::Update do
     response.status_code.should eq(302)
     member = member.reload
     member.name.should eq("Mamie Jo")
-    member.access_ends_at.should eq(Time.local(2027, 1, 4, location: Quest::TIME_ZONE))
+    member.access_ends_at.should eq(Time.local(2027, 1, 4, location: Household::TIME_ZONE))
   end
 
   it "keeps a child without an end of access" do
