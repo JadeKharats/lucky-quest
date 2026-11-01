@@ -1,0 +1,15 @@
+.git
+.github
+.env
+notes
+tmp
+bin
+lib
+.shards
+node_modules
+public/assets
+public/bun-manifest.json
+spec
+*.md
+.tool-versions
+.crystal-version
