@@ -2,6 +2,7 @@
 # stay fast and crytic can mutate them in isolation.
 require "spec"
 require "../../src/domain/health"
+require "../../src/domain/family"
 
 PARIS = Time::Location.load("Europe/Paris")
 
