@@ -1,6 +1,6 @@
 ---
 name: lucky_quest
-version: 0.9.0
+version: 0.10.0
 targets:
   lucky_quest:
     main: src/lucky_quest.cr
