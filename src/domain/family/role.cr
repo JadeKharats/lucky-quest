@@ -25,6 +25,11 @@ module Family
       !child?
     end
 
+    # The shop is for the children; parents and guests do not buy.
+    def buy_rewards? : Bool
+      child?
+    end
+
     # Guests (the grandparents) come in for a while, the household for good.
     def time_limited? : Bool
       guest?

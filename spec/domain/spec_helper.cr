@@ -4,6 +4,7 @@ require "spec"
 require "../../src/domain/health"
 require "../../src/domain/family"
 require "../../src/domain/quests"
+require "../../src/domain/progression"
 
 PARIS = Time::Location.load("Europe/Paris")
 

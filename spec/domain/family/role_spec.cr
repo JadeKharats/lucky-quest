@@ -31,6 +31,12 @@ describe Family::Role do
     Family::Role::Child.validate_quests?.should be_false
   end
 
+  it "lets only children buy rewards" do
+    Family::Role::Child.buy_rewards?.should be_true
+    Family::Role::Parent.buy_rewards?.should be_false
+    Family::Role::Guest.buy_rewards?.should be_false
+  end
+
   it "limits only guests in time" do
     Family::Role::Guest.time_limited?.should be_true
     Family::Role::Parent.time_limited?.should be_false
