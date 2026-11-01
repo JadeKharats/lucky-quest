@@ -7,6 +7,7 @@ require "../../src/domain/quests"
 require "../../src/domain/progression"
 require "../../src/domain/meals"
 require "../../src/domain/agenda"
+require "../../src/domain/appearance"
 
 PARIS = Time::Location.load("Europe/Paris")
 
