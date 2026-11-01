@@ -1,44 +1,27 @@
-name: lucky_quest CI
+name: CI
 
 on:
   push:
-    branches: "*"
+    branches: [main]
   pull_request:
-    branches: "*"
+  # Weekly rebuild: catch upstream breakage (base images, dependencies,
+  # browser/driver updates) before it hits a real change.
+  schedule:
+    - cron: "0 6 * * 1"
 
 jobs:
-  check-format:
-    strategy:
-      fail-fast: false
-      matrix:
-        crystal_version:
-          - 1.21.0
-        experimental:
-          - false
+  format:
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
+    container: crystallang/crystal:1.21.0-alpine
     steps:
-      - uses: actions/checkout@v6
-      - name: Install Crystal
-        uses: crystal-lang/install-crystal@v1
-        with:
-          crystal: ${{ matrix.crystal_version }}
-      - name: Format
+      - uses: actions/checkout@v4
+      - name: Check formatting
         run: crystal tool format --check
 
+  # Runs on the Ubuntu runner rather than the Alpine container: it ships
+  # Google Chrome and a matching chromedriver, needed by the LuckyFlow specs.
   specs:
-    strategy:
-      fail-fast: false
-      matrix:
-        crystal_version:
-          - 1.21.0
-        experimental:
-          - false
     runs-on: ubuntu-latest
-    env:
-      LUCKY_ENV: test
-      DB_HOST: localhost
-    continue-on-error: ${{ matrix.experimental }}
     services:
       postgres:
         image: postgres:18-alpine
@@ -46,68 +29,109 @@ jobs:
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
-       # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
+          --health-interval 5s
           --health-timeout 5s
-          --health-retries 5
-
+          --health-retries 10
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
     steps:
-      - uses: actions/checkout@v6
-      - name: Install Crystal
-        uses: crystal-lang/install-crystal@v1
+      - uses: actions/checkout@v4
+      - uses: crystal-lang/install-crystal@v1
         with:
-          crystal: ${{ matrix.crystal_version }}
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Set up Yarn cache
-        uses: actions/cache@v5
+          crystal: 1.21.0
+      - uses: oven-sh/setup-bun@v2
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          bun-version: 1.4.3
+      - name: Point LuckyFlow at the runner's chromedriver
+        run: echo "CHROMEDRIVER_PATH=$CHROMEWEBDRIVER/chromedriver" >> "$GITHUB_ENV"
+      - name: Install dependencies
+        run: shards install
+      # The asset manifest is read at compile time.
+      - name: Build assets
+        run: bun install --frozen-lockfile && bun run build
+      - name: Run specs
+        run: crystal spec
 
-      - name: Set up Node cache
-        uses: actions/cache@v5
-        id: node-cache # use this to check for `cache-hit` (`steps.node-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - name: Set up Crystal cache
-        uses: actions/cache@v5
-        id: crystal-cache
-        with:
-          path: |
-            ~/.cache/crystal
-            lib
-          key: ${{ runner.os }}-crystal-${{ hashFiles('**/shard.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-crystal-
-
-      - name: Install shards
-        if: steps.crystal-cache.outputs.cache-hit != 'true'
-        run: shards check || shards install
-
-      - name: Install yarn packages
-        if: steps.node-cache.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile --no-progress
-      - name: Compiling assets
-        run: yarn prod
-      - name: Build lucky_tasks
-        run: crystal build tasks.cr -o ./lucky_tasks
-
-      - name: Prepare database
+  lint:
+    runs-on: ubuntu-latest
+    container: crystallang/crystal:1.21.0-alpine
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install git
+        run: apk add --no-cache git
+      # The tagged ameba release does not yet build on Crystal 1.21, so build
+      # the current master, which does.
+      - name: Build ameba
         run: |
-          ./lucky_tasks db.create
-          ./lucky_tasks db.migrate
-          ./lucky_tasks db.seed.required_data
+          git clone --depth 1 https://github.com/crystal-ameba/ameba.git /ameba
+          cd /ameba && shards build
+      - name: Lint
+        run: /ameba/bin/ameba
 
-      - name: Run tests
-        run: crystal spec 
+  # Incremental mutation testing: only the domain files touched by the PR, so
+  # feedback stays fast. The domain is the pure logic worth gating; Lucky
+  # actions, pages and Avram models are adapters covered by the other specs.
+  mutation:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    services:
+      postgres:
+        image: postgres:18-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: 1.21.0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.3
+      - name: Point LuckyFlow at the runner's chromedriver
+        run: echo "CHROMEDRIVER_PATH=$CHROMEWEBDRIVER/chromedriver" >> "$GITHUB_ENV"
+      - name: Install dependencies
+        run: shards install && bun install --frozen-lockfile && bun run build
+      # crytic is not a shard dependency (local dev uses a global binary), and
+      # its tagged release pulls an ameba that doesn't build on Crystal 1.21,
+      # so build crytic here with ameba pinned to master.
+      - name: Build crytic
+        run: |
+          git clone --depth 1 --branch v9.0.0 https://github.com/hanneskaeufler/crytic.git /tmp/crytic
+          cd /tmp/crytic
+          printf 'dependencies:\n  ameba:\n    github: crystal-ameba/ameba\n    branch: master\n' > shard.override.yml
+          shards install
+          shards build
+      - name: Mutate changed domain files
+        run: |
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+            | grep '^src/domain/.*\.cr$' || true)
+          if [ -z "$changed" ]; then
+            echo "No domain files changed — skipping mutation testing."
+            exit 0
+          fi
+          status=0
+          for file in $changed; do
+            echo "::group::mutation $file"
+            /tmp/crytic/bin/crytic test --subject "$file" --min-msi 90 || status=1
+            echo "::endgroup::"
+          done
+          exit $status
